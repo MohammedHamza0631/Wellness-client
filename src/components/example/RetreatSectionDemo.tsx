@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useId } from "react";
 import { SkeletonCard } from "../SkeletonCard";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
-
+import axios from 'axios'
 type Retreat = {
   id: number;
   title: string;
@@ -34,28 +34,47 @@ export default function RetreatSectionDemo() {
 
   const [retreats, setRetreats] = useState<Retreat[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('')
 
-  useEffect(() => {
-    const fetchRetreats = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/retreats");
-        const data = await response.json();
-        setRetreats(data);
-      } catch (error) {
-        console.error("Error fetching retreats:", error);
-      } finally {
-        setLoading(false);
+  const fetchRetreats = async (term = '') => {
+    const controller = new AbortController()
+    try {
+      const url = term
+        ? `http://localhost:5000/api/retreats/search?search=${term}`
+        : 'http://localhost:5000/api/retreats';
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        signal: controller.signal
+      })
+      setRetreats(response.data)
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error('Error fetching retreats:', error)
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+    return () => controller.abort()
+  };
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      fetchRetreats(searchTerm)
+    }, 400) // Delay of 500ms to simulate debounce
 
+    return () => clearTimeout(delayDebounceFn)
+  }, [searchTerm])
+  useEffect(() => {
     fetchRetreats();
   }, []);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    setSearchTerm(e.target.value);
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submitted");
+    fetchRetreats(searchTerm);
+
   };
 
   if (loading) {
@@ -80,47 +99,49 @@ export default function RetreatSectionDemo() {
         onSubmit={onSubmit}
       />
       <br />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 md:gap-2 max-w-7xl mx-auto">
 
-        {retreats.map((retreat) => (
-          <div key={retreat.id} className="bg-white rounded-lg shadow-lg">
-            <img
-              src={retreat.image}
-              alt={retreat.title}
-              className="w-full h-48 object-cover rounded-t-lg"
-            />
-            <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-600">{retreat.title}</h2>
-              <p className="text-sm text-gray-600">{retreat.description}</p>
-              <p className="text-sm text-gray-600">{retreat.location}</p>
-              <p className="text-sm text-gray-600">
-                Duration: {retreat.duration} days
-              </p>
-              <p className="text-sm text-gray-600">
-                Date: {new Date(retreat.date).toLocaleDateString()}
-              </p>
-              <div className="flex items-center justify-between mt-4">
-                <span className="text-sm font-semibold text-gray-800">
-                  ${retreat.price}
-                </span>
-                <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                  Book Now
-                </button>
-              </div>
-              <div className="mt-4">
-                {retreat.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                  >
-                    {tag}
-                  </span>
-                ))}
+      {!retreats.length ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 md:gap-2 max-w-7xl mx-auto">
+          {[...Array(22)].map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 md:gap-2 max-w-7xl mx-auto">
+          {retreats.map((retreat) => (
+            <div key={retreat.id} className="bg-white rounded-lg shadow-lg">
+              <img
+                src={retreat.image}
+                alt={retreat.title}
+                className="w-full h-48 object-cover rounded-t-lg"
+              />
+              <div className="p-4">
+                <h2 className="text-lg font-semibold text-gray-600">{retreat.title}</h2>
+                <p className="text-sm text-gray-600">{retreat.description}</p>
+                <p className="text-sm text-gray-600">Location: {retreat.location}</p>
+                <p className="text-sm text-gray-600">Duration: {retreat.duration} days</p>
+                <p className="text-sm text-gray-600">
+                  Date: {new Date(retreat.date).toLocaleDateString()}
+                </p>
+                <div className="flex items-center justify-between mt-4">
+                  <span className="text-sm font-semibold text-gray-800">${retreat.price}</span>
+                  <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button>
+                </div>
+                <div className="mt-4">
+                  {retreat.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
