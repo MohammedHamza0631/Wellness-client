@@ -50,7 +50,7 @@ export default function RetreatSectionDemo() {
     const controller = new AbortController();
     try {
       const url = term
-        ? `http://localhost:5000/api/retreats/search?search=${term}`
+        ? `http://localhost:5000/api/retreats/search?search=${term}&page=${page}&limit=5`
         : `http://localhost:5000/api/retreats?page=${page}&limit=5`;
       const response = await axios.get(url, {
         headers: {
