@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import { FloatingNav } from './components/ui/floating-navbar';
 
 import { navItems } from './constants/navItems';
+import Login from './pages/Login';
 function App() {
 
 
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route index element={<Home />} />
           <Route path='/signup' element={<Signup />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
       </main>
     </div>
