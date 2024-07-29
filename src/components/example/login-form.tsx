@@ -29,7 +29,7 @@ export default function LoginForm() {
 
         try {
             const response = await axios.post(
-                'http://localhost:5000/api/auth/login',
+                'https://wellness-server-vwm2.onrender.com/api/auth/login',
                 {
                     username: username.value,
                     password: password.value
