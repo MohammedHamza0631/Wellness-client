@@ -2,16 +2,76 @@
 import React from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { useToast } from "@/components/ui/use-toast"
+import { ToastAction } from "../ui/toast";
 import { cn } from "@/lib/utils";
 import {
     IconLogin2,
 
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setUser } from '@/features/userSlice'
+import { AppDispatch } from "@/store";
 
 export default function LoginForm() {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const { toast } = useToast();
+    const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>()
+
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const { username, password } = e.target as typeof e.target & {
+            username: { value: string };
+            password: { value: string };
+        };
+
+        try {
+            const response = await axios.post(
+                'http://localhost:5000/api/auth/login',
+                {
+                    username: username.value,
+                    password: password.value
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    withCredentials: true,
+                },
+            );
+            console.log(response.data)
+            if (response.status !== 200) {
+                const errorData = await response.data;
+                throw new Error(errorData.error || 'Login Failed')
+            } else if (response.status === 200) {
+                const userInfo = await response.data
+                console.log(userInfo)
+                localStorage.setItem('token', userInfo.token)
+                toast({
+                    variant: "default",
+                    title: "Login Success",
+                    description: "You have successfully logged in",
+                    action: <ToastAction altText="Close">Close</ToastAction>,
+                })
+                dispatch(setUser(userInfo))
+                window.location.replace('/')
+            }
+        } catch (error) {
+            console.error('Login Error:', error)
+            const errorMessage = axios.isAxiosError(error) && error.response?.data.message
+                ? error.response.data.message
+                : (error as Error).message;
+            toast({
+                variant: "destructive",
+                title: "Login Error",
+                description: `There was an error:${errorMessage}`,
+                action: <ToastAction altText="Close">Close</ToastAction>,
+            })
+        }
         console.log("Form submitted");
     };
     return (

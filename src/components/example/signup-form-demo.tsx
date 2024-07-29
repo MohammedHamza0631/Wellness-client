@@ -9,12 +9,59 @@ import {
   IconBrandOnlyfans,
   IconLogin2,
 } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast"
+import { ToastAction } from "../ui/toast";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function SignupFormDemo() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
+    const { username, email, password } = e.target as typeof e.target & {
+      username: { value: string };
+      email: { value: string };
+      password: { value: string };
+    };
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/register',
+        {
+          username: username.value,
+          email: email.value,
+          password: password.value
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true,
+        },
+      );
+      console.log(response.data);
+      if (response.status !== 201) {
+        const errorData = response.data;
+        throw new Error(errorData.error || 'Registration Failed')
+      } else {
+        toast({
+          title: "Registration Success",
+          description: "You have successfully registered. Now Login",
+          action: <ToastAction altText="Close">Close</ToastAction>,
+        })
+        navigate('/login')
+      }
+    } catch (error) {
+      console.error('Registration Error:', error)
+      toast({
+        title: "Registration Error",
+        description: "There was an error: " + error,
+        action: <ToastAction altText="Close">Close</ToastAction>,
+
+      })
+    }
   };
   return (
     <div className="h-screen">

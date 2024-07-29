@@ -8,6 +8,11 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { logout } from "@/features/userSlice";
+
 
 export const FloatingNav = ({
   navItems,
@@ -22,6 +27,11 @@ export const FloatingNav = ({
 }) => {
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { user, loggedIn } = useSelector((state: RootState) => state.user);
+
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     // Ensure previous scrollYProgress value is defined
@@ -40,6 +50,12 @@ export const FloatingNav = ({
       }
     }
   });
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    dispatch(logout())
+    window.location.replace('/')
+  }
 
   return (
     <AnimatePresence mode="wait">
@@ -72,12 +88,25 @@ export const FloatingNav = ({
             <span className="hidden sm:block text-sm">{navItem.name}</span>
           </Link>
         ))}
-        <Link to='/login'>
-          <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-            <span>Login</span>
-            <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
-          </button>
-        </Link>
+        <>
+          {loggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full"
+            >
+              <span>Logout</span>
+              <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+            </button>
+          ) : (
+            <Link to='/login'>
+              <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
+                <span>Login</span>
+                <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+              </button>
+            </Link>
+          )}
+        </>
+
       </motion.div>
     </AnimatePresence>
   );
