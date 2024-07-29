@@ -1,6 +1,5 @@
 import LoginForm from '@/components/example/login-form'
 
-import React from 'react'
 
 function Login() {
     return (

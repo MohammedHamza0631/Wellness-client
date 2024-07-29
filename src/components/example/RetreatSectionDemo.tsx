@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -16,7 +15,7 @@ import {
 } from "@/components/ui/pagination";
 import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "../ui/toast";
-import { IconDeviceWatchHeart, IconHeart, IconRun } from "@tabler/icons-react";
+import { IconHeart } from "@tabler/icons-react";
 
 type Retreat = {
   id: number;
@@ -32,12 +31,7 @@ type Retreat = {
   tags: string[];
 };
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-};
+
 
 export default function RetreatSectionDemo() {
   const { toast } = useToast();

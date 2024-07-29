@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   motion,
   AnimatePresence,
@@ -8,7 +8,6 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { logout } from "@/features/userSlice";
@@ -29,7 +28,7 @@ export const FloatingNav = ({
   const [visible, setVisible] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { user, loggedIn } = useSelector((state: RootState) => state.user);
+  const {  loggedIn } = useSelector((state: RootState) => state.user);
 
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {

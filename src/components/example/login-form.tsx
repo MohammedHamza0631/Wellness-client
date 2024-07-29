@@ -11,14 +11,12 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/features/userSlice'
 import { AppDispatch } from "@/store";
 
 export default function LoginForm() {
     const { toast } = useToast();
-    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
 
 
