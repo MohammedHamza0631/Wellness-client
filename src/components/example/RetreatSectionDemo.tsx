@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/pagination";
 import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "../ui/toast";
+import { IconDeviceWatchHeart, IconHeart, IconRun } from "@tabler/icons-react";
 
 type Retreat = {
   id: number;
@@ -123,7 +124,6 @@ export default function RetreatSectionDemo() {
   const { loggedIn } = useSelector((state: RootState) => state.user);
   const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : null;
 
-
   const bookRetreat = async (retreatId: number) => {
     if (!loggedIn) {
       toast({
@@ -160,6 +160,7 @@ export default function RetreatSectionDemo() {
           title: "Booking Success",
           description: "You have successfully booked the retreat",
           action: <ToastAction altText="Close">Close</ToastAction>,
+          className: 'bg-green-500 text-black'
         })
         fetchBookedRetreats();
       }
@@ -220,50 +221,36 @@ export default function RetreatSectionDemo() {
               {index >= 4 && (
                 <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-b from-neutral-100 dark:from-neutral-800 to-transparent pointer-events-none" />
               )}
-              <img
-                src={retreat.image}
-                alt={retreat.title}
-                className="w-full h-40 object-cover rounded-lg shadow-lg"
-              />
-              <div className="p-4">
-                <div className="text-lg font-bold mb-2 relative z-10 px-10">
-                  <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-neutral-300 dark:bg-neutral-700 group-hover/feature:bg-blue-500 transition-all duration-200 origin-center" />
-                  <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-neutral-800 dark:text-neutral-100">
-                    {retreat.title}
-                  </span>
+              <div className="mb-4 relative z-10 px-10 text-neutral-600 dark:text-neutral-400">
+                < IconHeart />
+              </div>
+              <div className="relative z-10 px-10">
+                <img
+                  src={retreat.image}
+                  alt={retreat.title}
+                  className="w-full h-40 object-cover rounded-lg shadow-lg"
+                />
+              </div>
+              <div className="text-lg font-bold mb-2 relative z-10 px-10">
+                <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-gradient-to-b from-neutral-200 to-neutral-600 dark:from-neutral-600 dark:to-neutral-200" />
+                {retreat.title}
+              </div>
+              <div className="relative z-10 px-10">
+                <div className="text-md text-neutral-600 dark:text-neutral-400">{retreat.description}</div>
+                <div className="mt-2">
+                  <p className="text-sm font-semibold">Date: {retreat.date}</p>
+                  <p className="text-sm font-semibold">Location: {retreat.location}</p>
+                  <p className="text-sm font-semibold">Price: {retreat.price}</p>
                 </div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-300 max-w-xs relative z-10 px-10">
-                  {retreat.description}
-                </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-300 max-w-xs relative z-10 px-10">Location: {retreat.location}</p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-300 max-w-xs relative z-10 px-10">Duration: {retreat.duration} days</p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-300 max-w-xs relative z-10 px-10">
-                  Date: {new Date(retreat.date).toLocaleDateString()}
-                </p>
-                <div className="flex items-center justify-between mt-4">
-                  <span className="text-sm font-semibold text-gray-800">${retreat.price}</span>
-                  {/* <button onClick={() => bookRetreat(retreat.id)} className=" disabled:bg-blue-300 px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button> */}
-                  <button
-                    className={`${bookedRetreats.includes(retreat.id)
-                      ? 'bg-green-500'
-                      : 'bg-blue-500'
-                      } text-white font-bold py-2 px-4 rounded`}
-                    onClick={() => bookRetreat(retreat.id)}
-                    disabled={bookedRetreats.includes(retreat.id)}
-                  >
-                    {bookedRetreats.includes(retreat.id) ? 'Booked' : 'Book Now'}
-                  </button>
-                </div>
-                <div className="mt-4">
-                  {retreat.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                <button
+                  onClick={() => bookRetreat(retreat.id)}
+                  disabled={bookedRetreats.includes(retreat.id)}
+                  // className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+                  className={`mt-4 px-4 py-2 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 ${bookedRetreats.includes(retreat.id) ? 'bg-green-500' : 'bg-blue-500'
+                    }`}
+                >
+                  {bookedRetreats.includes(retreat.id) ? "Booked" : "Book Now"}
+                </button>
               </div>
             </div>
           ))}

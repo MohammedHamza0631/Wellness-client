@@ -49,6 +49,7 @@ export default function SignupFormDemo() {
           title: "Registration Success",
           description: "You have successfully registered. Now Login",
           action: <ToastAction altText="Close">Close</ToastAction>,
+          className: 'bg-green-500 text-black'
         })
         navigate('/login')
       }
@@ -58,6 +59,7 @@ export default function SignupFormDemo() {
         ? error.response.data.message
         : (error as Error).message;
       toast({
+        variant: "destructive",
         title: "Registration Error",
         description: `Error: ${errorMessage}`,
         action: <ToastAction altText="Close">Close</ToastAction>,

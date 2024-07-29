@@ -56,6 +56,7 @@ export default function LoginForm() {
                     title: "Login Success",
                     description: "You have successfully logged in",
                     action: <ToastAction altText="Close">Close</ToastAction>,
+                    className: 'bg-green-500 text-black'
                 })
                 dispatch(setUser(userInfo))
                 window.location.replace('/')
