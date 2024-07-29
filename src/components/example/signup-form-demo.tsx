@@ -4,9 +4,6 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 import {
-  IconBrandGithub,
-  IconBrandGoogle,
-  IconBrandOnlyfans,
   IconLogin2,
 } from "@tabler/icons-react";
 import { useToast } from "@/components/ui/use-toast"
@@ -21,10 +18,11 @@ export default function SignupFormDemo() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { username, email, password } = e.target as typeof e.target & {
+    const { username, email, password, phone } = e.target as typeof e.target & {
       username: { value: string };
       email: { value: string };
       password: { value: string };
+      phone: { value: string };
     };
     try {
       const response = await axios.post(
@@ -32,7 +30,8 @@ export default function SignupFormDemo() {
         {
           username: username.value,
           email: email.value,
-          password: password.value
+          password: password.value,
+          phone: phone.value,
         },
         {
           headers: {
@@ -85,6 +84,11 @@ export default function SignupFormDemo() {
             <Label htmlFor="email">Email Address</Label>
             <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
           </LabelInputContainer>
+          <LabelInputContainer className="mb-4">
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input id="phone" placeholder="9134485582" type="number" />
+          </LabelInputContainer>
+
           <LabelInputContainer className="mb-4">
             <Label htmlFor="password">Password</Label>
             <Input id="password" placeholder="••••••••" type="password" />

@@ -2,7 +2,7 @@ import React, { useEffect, Suspense } from "react";
 import { BackgroundBeamsDemo } from "@/components/example/BackgroundBeamsDemo";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import RetreatSectionDemo from "@/components/example/RetreatSectionDemo";
-
+import FeatureSectionDemo from "@/components/blocks/features-section-demo-2";
 const ExpandableCardDemo = React.lazy(() =>
     import("@/components/example/ExpandableCard")
 );

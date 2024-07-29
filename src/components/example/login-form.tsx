@@ -43,7 +43,7 @@ export default function LoginForm() {
                     withCredentials: true,
                 },
             );
-            console.log(response.data)
+            // console.log(response.data)
             if (response.status !== 200) {
                 const errorData = await response.data;
                 throw new Error(errorData.error || 'Login Failed')
