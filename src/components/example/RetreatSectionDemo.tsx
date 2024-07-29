@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { SkeletonCard } from "../SkeletonCard";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
 import axios from 'axios';
+import {  useSelector } from "react-redux";
+import {  RootState } from "@/store";
 import {
   Pagination,
   PaginationContent,
@@ -39,7 +41,7 @@ export default function RetreatSectionDemo() {
     "Hoping to learn new techniques for stress management?",
     "Ready to book a personalized wellness experience?"
   ];
-
+  const { user, loggedIn } = useSelector((state: RootState) => state.user);
   const [retreats, setRetreats] = useState<Retreat[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -104,7 +106,11 @@ export default function RetreatSectionDemo() {
       </div>
     );
   }
-
+  const handleBook = () => {
+    if (loggedIn == false) {
+      alert('Please login to book a retreat');
+    }
+  }
   return (
     <div className="py-20 lg:py-40">
       <h1 className="relative z-10 text-lg md:text-5xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold mb-5">
@@ -143,7 +149,7 @@ export default function RetreatSectionDemo() {
                 </p>
                 <div className="flex items-center justify-between mt-4">
                   <span className="text-sm font-semibold text-gray-800">${retreat.price}</span>
-                  <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button>
+                  <button onClick={handleBook} className=" disabled:bg-blue-300 px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button>
                 </div>
                 <div className="mt-4">
                   {retreat.tags.map((tag) => (

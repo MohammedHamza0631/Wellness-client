@@ -27,7 +27,6 @@ export const FloatingNav = ({
 }) => {
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
   const { user, loggedIn } = useSelector((state: RootState) => state.user);
