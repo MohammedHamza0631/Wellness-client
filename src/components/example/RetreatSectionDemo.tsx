@@ -232,9 +232,10 @@ export default function RetreatSectionDemo() {
               <div className="relative z-10 px-10">
                 <div className="text-md text-neutral-600 dark:text-neutral-400">{retreat.description}</div>
                 <div className="mt-2">
-                  <p className="text-sm font-semibold">Date: {retreat.date}</p>
+                  <p className="text-sm font-semibold">Date: {new Date(retreat.date).toLocaleDateString()}</p>
                   <p className="text-sm font-semibold">Location: {retreat.location}</p>
-                  <p className="text-sm font-semibold">Price: {retreat.price}</p>
+                  <p className="text-sm font-semibold">Duration: {retreat.duration} days</p>
+                  <p className="text-sm font-semibold">Price: $ {retreat.price}</p>
                 </div>
                 <button
                   onClick={() => bookRetreat(retreat.id)}
@@ -245,6 +246,16 @@ export default function RetreatSectionDemo() {
                 >
                   {bookedRetreats.includes(retreat.id) ? "Booked" : "Book Now"}
                 </button>
+              </div>
+              <div className="mt-10 relative z-10 px-10">
+                {retreat.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-block bg-gray-200 rounded-full px-3 py-1 w-fit text-sm font-semibold text-gray-700 mr-2 mb-2"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
           ))}

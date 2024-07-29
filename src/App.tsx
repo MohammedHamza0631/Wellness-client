@@ -13,7 +13,7 @@ function App() {
       <nav className='relative w-full'>
         <FloatingNav navItems={navItems} />
       </nav>
-      <main>
+      <main className='overflow-x-hidden'>
         <Routes>
           <Route index element={<Home />} />
           <Route path='/signup' element={<Signup />} />

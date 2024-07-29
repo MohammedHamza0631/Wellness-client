@@ -13,7 +13,7 @@ function Home() {
 
 
     return (
-        <div className='px-4 md:px-2 lg:px-0'>
+        <div className='px-4 md:px-2 lg:px-2'>
             <BackgroundBeamsDemo />
             <Suspense
                 fallback={
