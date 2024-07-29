@@ -49,7 +49,7 @@ export default function LoginForm() {
                 throw new Error(errorData.error || 'Login Failed')
             } else if (response.status === 200) {
                 const userInfo = await response.data
-                console.log(userInfo)
+                // console.log(userInfo)
                 localStorage.setItem('token', userInfo.token)
                 toast({
                     variant: "default",
@@ -68,7 +68,7 @@ export default function LoginForm() {
             toast({
                 variant: "destructive",
                 title: "Login Error",
-                description: `There was an error:${errorMessage}`,
+                description: `Error:${errorMessage}`,
                 action: <ToastAction altText="Close">Close</ToastAction>,
             })
         }

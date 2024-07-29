@@ -41,7 +41,7 @@ export default function SignupFormDemo() {
           withCredentials: true,
         },
       );
-      console.log(response.data);
+      // console.log(response.data);
       if (response.status !== 201) {
         const errorData = response.data;
         throw new Error(errorData.error || 'Registration Failed')
@@ -55,9 +55,12 @@ export default function SignupFormDemo() {
       }
     } catch (error) {
       console.error('Registration Error:', error)
+      const errorMessage = axios.isAxiosError(error) && error.response?.data.message
+        ? error.response.data.message
+        : (error as Error).message;
       toast({
         title: "Registration Error",
-        description: "There was an error: " + error,
+        description: `Error: ${errorMessage}`,
         action: <ToastAction altText="Close">Close</ToastAction>,
 
       })
