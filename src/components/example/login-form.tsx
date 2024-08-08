@@ -29,7 +29,7 @@ export default function LoginForm() {
 
         try {
             const response = await axios.post(
-                'https://wellness-server-vwm2.onrender.com/api/auth/login',
+                'https://wellness-retreat-server.vercel.app/api/auth/login',
                 {
                     username: username.value,
                     password: password.value
