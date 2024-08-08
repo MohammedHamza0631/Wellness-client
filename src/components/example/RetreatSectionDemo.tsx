@@ -90,13 +90,13 @@ export default function RetreatSectionDemo() {
     }
   };
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      fetchRetreats(searchTerm, currentPage);
-    }, 400); // Delay of 500ms to simulate debounce
+  // useEffect(() => {
+  //   const delayDebounceFn = setTimeout(() => {
+  //     fetchRetreats(searchTerm, currentPage);
+  //   }, 400); // Delay of 500ms to simulate debounce
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, currentPage]);
+  //   return () => clearTimeout(delayDebounceFn);
+  // }, [searchTerm, currentPage]);
 
   useEffect(() => {
     fetchRetreats();
