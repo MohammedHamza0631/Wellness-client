@@ -26,7 +26,7 @@ export default function SignupFormDemo() {
     };
     try {
       const response = await axios.post(
-        'https://wellness-retreat-server.vercel.app/api/auth/register',
+        'https://wellness-server-vwm2.onrender.com/api/auth/register',
         {
           username: username.value,
           email: email.value,

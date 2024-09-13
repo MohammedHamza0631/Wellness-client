@@ -59,8 +59,8 @@ export default function RetreatSectionDemo() {
     const controller = new AbortController();
     try {
       const url = term
-        ? `https://wellness-retreat-server.vercel.app/api/retreats/search?search=${term}&page=${page}&limit=5`
-        : `https://wellness-retreat-server.vercel.app/api/retreats?page=${page}&limit=5`;
+        ? `https://wellness-server-vwm2.onrender.com/api/retreats/search?search=${term}&page=${page}&limit=5`
+        : `https://wellness-server-vwm2.onrender.com/api/retreats?page=${page}&limit=5`;
       const response = await axios.get(url, {
         headers: {
           'Content-Type': 'application/json'
@@ -82,7 +82,7 @@ export default function RetreatSectionDemo() {
   const fetchBookedRetreats = async () => {
     if (user && user.id) {
       try {
-        const response = await axios.get(`https://wellness-retreat-server.vercel.app/api/book/${user.id}`);
+        const response = await axios.get(`https://wellness-server-vwm2.onrender.com/api/book/${user.id}`);
         setBookedRetreats(response.data.map((booking: { retreat_id: number }) => booking.retreat_id));
       } catch (error) {
         console.error('Error fetching booked retreats:', error);
@@ -130,7 +130,7 @@ export default function RetreatSectionDemo() {
     }
     try {
       const response = await axios.post(
-        `https://wellness-retreat-server.vercel.app/api/book/${retreatId}`,
+        `https://wellness-server-vwm2.onrender.com/api/book/${retreatId}`,
         {
           user_id: user?.id,
           user_name: user?.username,

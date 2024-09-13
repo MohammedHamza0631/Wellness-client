@@ -6,8 +6,6 @@ import { FloatingNav } from './components/ui/floating-navbar';
 import { navItems } from './constants/navItems';
 import Login from './pages/Login';
 function App() {
-
-
   return (
     <div className='flex flex-col'>
       <nav className='relative w-full'>
